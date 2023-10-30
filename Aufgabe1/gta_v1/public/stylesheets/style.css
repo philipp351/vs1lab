@@ -57,8 +57,15 @@ input[type="submit"] {
   width: 80%;
   padding: 10px;
   margin: 5px;
-  
 }
+
+input[type="number"] {
+  width: 80%;
+  padding: 10px;
+  margin: 5px;
+}
+
+
 
 /* Grid styles (no changes required) */
 
