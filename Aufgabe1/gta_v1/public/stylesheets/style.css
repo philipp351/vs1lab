@@ -44,7 +44,7 @@ a {
   color: var(--link-color);
 }
 
-/* Styles for other HTML elements */
+/*Styles for other HTML elements */
 
 input[type="text"] {
   width: 80%;
@@ -57,8 +57,15 @@ input[type="submit"] {
   width: 80%;
   padding: 10px;
   margin: 5px;
-  
 }
+
+input[type="number"] {
+  width: 80%;
+  padding: 10px;
+  margin: 5px;
+}
+
+
 
 /* Grid styles (no changes required) */
 
@@ -122,7 +129,7 @@ input[type="submit"] {
 
 header {
   background: linear-gradient(to right, #7ad5f9 , #dedee7);
-  display:flex;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   border: 1px solid black;
@@ -143,7 +150,7 @@ header {
   height: auto;
 }
 
-/* Styles for Main Component */
+/* ### TODO ### Styles for Main Component */
 
 .main {
   display: flex;
@@ -177,11 +184,7 @@ header {
   justify-content: space-between;
 }
 
-.form-container:invalid {
-  border: red;
-}
-
-/* Styles for Discovery component */
+/* ### TODO ### Styles for Discovery component */
 
 .main__discovery {
   flex: 2;
@@ -192,8 +195,8 @@ header {
 .discovery__wrapper {
   display: flex;
   flex-direction: row;
-  margin-top: 10px;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
 .discovery form {
@@ -233,7 +236,7 @@ header {
 }
 
 
-/* Styles for Footer Component */
+/*Styles for Footer Component */
 
 .footer {
   background-color: #dedee7;
@@ -243,7 +246,7 @@ header {
 }
 
 
-/* Media Queries */
+/*Media Queries */
 
 @media (max-width: 768px) {
   .main__tagging, .main__discovery {
