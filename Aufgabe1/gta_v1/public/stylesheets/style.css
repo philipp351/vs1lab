@@ -125,7 +125,7 @@ input[type="number"] {
 }
 
 
-/* Styles for Header Component */
+/*Styles for Header Component */
 
 header {
   background: linear-gradient(to right, #7ad5f9 , #dedee7);
@@ -150,7 +150,7 @@ header {
   height: auto;
 }
 
-/* ### TODO ### Styles for Main Component */
+/*Styles for Main Component */
 
 .main {
   display: flex;
@@ -165,7 +165,7 @@ header {
 }
 
 
-/* Styles for Tagging component */
+/*Styles for Tagging component */
 
 .main__tagging {
   flex: 1;
@@ -184,7 +184,7 @@ header {
   justify-content: space-between;
 }
 
-/* ### TODO ### Styles for Discovery component */
+/*Styles for Discovery component */
 
 .main__discovery {
   flex: 2;
