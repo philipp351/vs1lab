@@ -30,6 +30,24 @@ class GeoTagExamples {
             ['Building K', 49.013190, 8.392090, '#campus'],
         ];
     }
+
+    
 }
+// Beispiel: Einlesen der GeoTagExamples und Erstellen von GeoTag-Instanzen
+const geoTagExamples = GeoTagExamples.tagList.map(tagData => {
+    const [name, latitude, longitude, hashtag] = tagData;
+    return new GeoTag(name, latitude, longitude, hashtag);
+});
+
+// Beispiel: Verwendung der erstellten GeoTag-Instanzen
+geoTagExamples.forEach(tag => {
+    console.log(`Name: ${tag.name}, Latitude: ${tag.latitude}, Longitude: ${tag.longitude}, Hashtag: ${tag.hashtag}`);
+});
+
+// Beispiel: Hinzufügen der erstellten GeoTag-Instanzen zum GeoTagStore
+const geoTagStore = new InMemoryGeoTagStore();
+geoTagExamples.forEach(tag => {
+    geoTagStore.addGeoTag(tag);
+});
 
 module.exports = GeoTagExamples;

@@ -24,8 +24,22 @@
  * - Keyword matching should include partial matches from name or hashtag fields. 
  */
 class InMemoryGeoTagStore{
+    #geotags; // Private array to store geotags
 
-    // TODO: ... your code here ...
+    constructor() {
+        this.#geotags = [];
+    }
+
+    // Method to add a geotag to the store
+    addGeoTag(geoTag) {
+        this.#geotags.push(geoTag);
+    }
+
+    // Method to remove geo-tags from the store by name
+    removeGeoTagByName(name) {
+        this.#geotags = this.#geotags.filter(geoTag => geoTag.name !== name);
+    }
+
 
 }
 
