@@ -40,6 +40,32 @@ class InMemoryGeoTagStore{
         this.#geotags = this.#geotags.filter(geoTag => geoTag.name !== name);
     }
 
+    getNearbyGeoTags(location, radius) { 
+
+    }
+
+    searchNearbyGeoTags(location, radius, keyword) {
+        return this.#geotags.filter(geoTag => 
+            this.isInProximity(geoTag, location, radius) &&
+            (geoTag.name.includes(keyword) || geoTag.hashtag.includes(keyword))
+        );
+    }
+
+    isInProximity(geoTag, location, radius) {
+        const distance = this.calculateDistance(
+            location.latitude, location.longitude,
+            geoTag.latitude, geoTag.longitude
+        );
+
+        return distance <= radius;
+    }
+
+    calculateDistance(lat1, lon1, lat2, lon2) {
+        const latDiff = lat2 - lat1;
+        const lonDiff = lon2 - lon1;
+        return Math.sqrt(latDiff * latDiff + lonDiff * lonDiff);
+    }
+
 
 }
 

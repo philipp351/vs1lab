@@ -31,6 +31,8 @@ const GeoTag = require('../models/geotag');
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
 
+const geoTagStore = new GeoTagStore();
+
 /**
  * Route '/' for HTTP 'GET' requests.
  * (http://expressjs.com/de/4x/api.html#app.get.method)
@@ -60,7 +62,23 @@ router.get('/', (req, res) => {
  * by radius around a given location.
  */
 
-// TODO: ... your code here ...
+router.post('/tagging', (req, res) => {
+  // POST-Anfrage für '/tagging' verarbeiten
+  const { name, latitude, longitude, hashtag } = req.body;
+
+  // Neue GeoTag-Instanz erstellen
+  const newGeoTag = new GeoTag(name, parseFloat(latitude), parseFloat(longitude), hashtag);
+
+  // GeoTag zum GeoTagStore hinzufügen
+  geoTagStore.addGeoTag(newGeoTag);
+
+  // GeoTags in der Nähe des neuen GeoTags abrufen
+  const proximityTags = geoTagStore.getNearbyGeoTags({ latitude: newGeoTag.latitude, longitude: newGeoTag.longitude }, 1000);
+
+  // Beispiel: GeoTag-Liste an das EJS-Template übergeben
+  res.render('index', { taglist: proximityTags });
+});
+
 
 /**
  * Route '/discovery' for HTTP 'POST' requests.
@@ -78,6 +96,21 @@ router.get('/', (req, res) => {
  * by radius and keyword.
  */
 
-// TODO: ... your code here ...
+router.post('/discovery', (req, res) => {
+  // POST-Anfrage für '/discovery' verarbeiten
+  const { latitude, longitude, searchTerm } = req.body;
+
+  // GeoTags in der Nähe der angegebenen Koordinaten abrufen
+  let discoveryTags = geoTagStore.getNearbyGeoTags({ latitude: parseFloat(latitude), longitude: parseFloat(longitude) }, 1000);
+
+  // Wenn ein Suchbegriff vorhanden ist, nach diesem Begriff filtern
+  if (searchTerm) {
+    discoveryTags = discoveryTags.filter(tag => tag.name.includes(searchTerm) || tag.hashtag.includes(searchTerm));
+  }
+
+  // Beispiel: GeoTag-Liste an das EJS-Template übergeben
+  res.render('index', { taglist: discoveryTags });
+});
+
 
 module.exports = router;
