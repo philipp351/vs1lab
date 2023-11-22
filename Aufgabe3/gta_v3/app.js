@@ -36,6 +36,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// Use public folder for css & images
+app.use(express.static('public'));
+
 /**
  * VS1LAB:
  * Configure path for static content.
