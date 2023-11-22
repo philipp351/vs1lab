@@ -47,6 +47,14 @@ app.use(express.static('public'));
 
 // TODO: ... your code here ...
 
+app.get('/', (req, res) => {
+  const currentLatitude = req.query.latitude;
+  const currentLongitude = req.query.longitude;
+
+  // Passen Sie Ihren Render-Aufruf an, um die aktuellen Koordinaten zu übergeben
+  res.render('index', { taglist: [], currentLatitude, currentLongitude });
+});
+
 // Set dedicated script for routing
 app.use('/', indexRouter);
 

@@ -43,8 +43,14 @@ const geoTagStore = new GeoTagStore();
  */
 
 // TODO: extend the following route example if necessary
+
+
+
 router.get('/', (req, res) => {
-  res.render('index', { taglist: [] })
+  const currentLatitude = req.query.latitude;
+  const currentLongitude = req.query.longitude;
+  
+  res.render('index', { taglist: [], currentLatitude, currentLongitude })
 });
 
 /**
