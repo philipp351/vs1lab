@@ -40,8 +40,8 @@ class InMemoryGeoTagStore{
         this.#geotags = this.#geotags.filter(geoTag => geoTag.name !== name);
     }
 
-    getNearbyGeoTags(location, radius) { 
-
+    getNearbyGeoTags(location, radius) {
+        return this.#geotags.filter(geoTag => this.isInProximity(geoTag, location, radius));
     }
 
     searchNearbyGeoTags(location, radius, keyword) {
