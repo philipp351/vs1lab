@@ -1,5 +1,8 @@
 // File origin: VS1LAB A3
 
+const GeoTag = require("./geotag");
+const GeoTagExamples = require("./geotag-examples");
+
 /**
  * This script is a template for exercise VS1lab/Aufgabe3
  * Complete all TODOs in the code documentation.
@@ -24,10 +27,26 @@
  * - Keyword matching should include partial matches from name or hashtag fields. 
  */
 class InMemoryGeoTagStore{
-    #geotags; // Private array to store geotags
+    #geotags = []; // Private array to store geotags
 
     constructor() {
-        this.#geotags = [];
+        GeoTagExamples.tagList.forEach((item) => {
+            const [name, latitude, longitude, hashtag] = item;
+            const newGeoTag = new GeoTag(name, latitude, longitude, hashtag);
+            this.#geotags.push(newGeoTag);
+        });
+    }
+
+    returnAsArray() {
+        let outputArr =  [];
+        this.#geotags.forEach(element => {
+            outputArr.push({name: element.name, latitude: element.latitude, longitude: element.longitude, hashtag: element.hashtag})
+        });
+        return outputArr;
+    }
+
+    getAllGeoTag() {
+        return this.#geotags;
     }
 
     // Method to add a geotag to the store

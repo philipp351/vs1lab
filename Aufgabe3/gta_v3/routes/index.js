@@ -30,6 +30,7 @@ const GeoTag = require('../models/geotag');
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
+const GeoTagExamples = require('../models/geotag-examples');
 
 const geoTagStore = new GeoTagStore();
 
@@ -50,7 +51,7 @@ router.get('/', (req, res) => {
   const currentLatitude = req.query.latitude;
   const currentLongitude = req.query.longitude;
   
-  res.render('index', { taglist: [], currentLatitude, currentLongitude })
+  res.render('index', { taglist: geoTagStore.returnAsArray(), currentLatitude: currentLatitude, currentLongitude: currentLongitude })
 });
 
 /**
@@ -72,15 +73,12 @@ router.post('/tagging', (req, res) => {
   // POST-Anfrage für '/tagging' verarbeiten
   const { name, latitude, longitude, hashtag } = req.body;
 
-  // Neue GeoTag-Instanz erstellen
-  const newGeoTag = new GeoTag(name, parseFloat(latitude), parseFloat(longitude), hashtag);
 
-  // GeoTag zum GeoTagStore hinzufügen
+  const newGeoTag = new GeoTag(name, latitude, longitude, hashtag);
   geoTagStore.addGeoTag(newGeoTag);
 
   // GeoTags in der Nähe des neuen GeoTags abrufen
-  const proximityTags = geoTagStore.getNearbyGeoTags({ latitude: newGeoTag.latitude, longitude: newGeoTag.longitude }, 1000);
-
+  const proximityTags = geoTagStore.getAllGeoTag();
   // Beispiel: GeoTag-Liste an das EJS-Template übergeben
   res.render('index', { taglist: proximityTags });
 });
