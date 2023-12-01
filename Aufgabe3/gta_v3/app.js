@@ -36,8 +36,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Use public folder for css & images
-app.use(express.static('public'));
 
 /**
  * VS1LAB:
@@ -46,14 +44,7 @@ app.use(express.static('public'));
  */
 
 // TODO: ... your code here ...
-
-app.get('/', (req, res) => {
-  const currentLatitude = req.query.latitude;
-  const currentLongitude = req.query.longitude;
-
-  // Passen Sie Ihren Render-Aufruf an, um die aktuellen Koordinaten zu übergeben
-  res.render('index', { taglist: [], currentLatitude, currentLongitude });
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Set dedicated script for routing
 app.use('/', indexRouter);

@@ -30,7 +30,6 @@ const GeoTag = require('../models/geotag');
  */
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
-const GeoTagExamples = require('../models/geotag-examples');
 
 const geoTagStore = new GeoTagStore();
 
@@ -48,10 +47,7 @@ const geoTagStore = new GeoTagStore();
 
 
 router.get('/', (req, res) => {
-  const currentLatitude = req.query.latitude;
-  const currentLongitude = req.query.longitude;
-  
-  res.render('index', { taglist: geoTagStore.returnAsArray(), currentLatitude: currentLatitude, currentLongitude: currentLongitude })
+  res.render('index', {taglist: geoTagStore.geotags, latitude: "", longitude: "" })
 });
 
 /**
@@ -70,17 +66,17 @@ router.get('/', (req, res) => {
  */
 
 router.post('/tagging', (req, res) => {
-  // POST-Anfrage für '/tagging' verarbeiten
-  const { name, latitude, longitude, hashtag } = req.body;
+  const name = req.body.name;
+  const latitude = req.body.latitude;
+  const longitude = req.body.longitude;
+  const hashtag = req.body.hashtag;
 
-
-  const newGeoTag = new GeoTag(name, latitude, longitude, hashtag);
-  geoTagStore.addGeoTag(newGeoTag);
-
-  // GeoTags in der Nähe des neuen GeoTags abrufen
-  const proximityTags = geoTagStore.getAllGeoTag();
-  // Beispiel: GeoTag-Liste an das EJS-Template übergeben
-  res.render('index', { taglist: proximityTags });
+  geoTagStore.addGeoTag(name, latitude, longitude, hashtag);
+  res.render('index', {
+    taglist: geoTagStore.getNearbyGeoTags(latitude, longitude, 100),
+    latitude: latitude,
+    longitude: longitude
+  });
 });
 
 
@@ -101,19 +97,14 @@ router.post('/tagging', (req, res) => {
  */
 
 router.post('/discovery', (req, res) => {
-  // POST-Anfrage für '/discovery' verarbeiten
-  const { latitude, longitude, searchTerm } = req.body;
-
-  // GeoTags in der Nähe der angegebenen Koordinaten abrufen
-  let discoveryTags = geoTagStore.getNearbyGeoTags({ latitude: parseFloat(latitude), longitude: parseFloat(longitude) }, 1000);
-
-  // Wenn ein Suchbegriff vorhanden ist, nach diesem Begriff filtern
-  if (searchTerm) {
-    discoveryTags = discoveryTags.filter(tag => tag.name.includes(searchTerm) || tag.hashtag.includes(searchTerm));
-  }
-
-  // Beispiel: GeoTag-Liste an das EJS-Template übergeben
-  res.render('index', { taglist: discoveryTags });
+  const latitude = req.body.latitude;
+  const longitude = req.body.longitude;
+  const searchTerm = req.body.searchterm;
+  res.render('index', {
+    taglist: geoTagStore.searchNearbyGeoTags(latitude, longitude, 100, searchTerm),
+    latitude: latitude,
+    longitude: longitude
+  });
 });
 
 
