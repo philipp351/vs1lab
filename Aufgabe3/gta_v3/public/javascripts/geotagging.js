@@ -3,10 +3,10 @@ function updateLocation() {
     const mapManager = new MapManager('c8nLw5oe3DkrjZlfHY3KTVguYfnvcUHw');
 
     // Lesen Sie die geeigneten Formularfelder im DOM aus
-    const taggingLatitudeInput = document.getElementById('tagLatitude');
-    const taggingLongitudeInput = document.getElementById('tagLongitude');
-    const discoveryLatitudeInput = document.getElementById('latitude');
-    const discoveryLongitudeInput = document.getElementById('longitude');
+    const taggingLatitudeInput = document.getElementById('latitude');
+    const taggingLongitudeInput = document.getElementById('longitude');
+    const discoveryLatitudeInput = document.getElementById('disc_latitude');
+    const discoveryLongitudeInput = document.getElementById('disc_longitude');
 
     const mapImage = document.getElementById('mapView');
 

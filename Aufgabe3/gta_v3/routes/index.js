@@ -97,8 +97,8 @@ router.post('/tagging', (req, res) => {
  */
 
 router.post('/discovery', (req, res) => {
-  const latitude = req.body.latitude;
-  const longitude = req.body.longitude;
+  const latitude = req.body.disc_latitude;
+  const longitude = req.body.disc_longitude;
   const searchTerm = req.body.searchterm;
   res.render('index', {
     taglist: geoTagStore.searchNearbyGeoTags(latitude, longitude, 100, searchTerm),
