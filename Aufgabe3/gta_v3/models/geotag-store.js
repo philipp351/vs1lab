@@ -28,34 +28,38 @@ const GeoTag = require("./geotag");
  * - Keyword matching should include partial matches from name or hashtag fields. 
  */
 class InMemoryGeoTagStore{
-    geotags = []; // Private array to store geotags
+    #geotags = []; // Private array to store geotags
 
     constructor() {
         GeoTagExamples.tagList.forEach((item) => {
             const [name, latitude, longitude, hashtag] = item;
             const newGeoTag = new GeoTag(name, latitude, longitude, hashtag);
-            this.geotags.push(newGeoTag);
+            this.#geotags.push(newGeoTag);
         });
     }
 
+    get geotags() {
+        return this.#geotags;
+      }
+
     addGeoTag(name, latitude, longitude, hashtag){
-        this.geotags.push(new GeoTag(name, latitude, longitude, hashtag));
+        this.#geotags.push(new GeoTag(name, latitude, longitude, hashtag));
     }
 
     // Method to remove geo-tags from the store by name
     removeGeoTag(name){
         for (let i = 0; i < this.tagList.length; i++) {
-            if(this.geotags[i].name === name){
-                this.geotags.splice(i, 1);
+            if(this.#geotags[i].name === name){
+                this.#geotags.splice(i, 1);
             }
         }
     }
 
     getNearbyGeoTags(latitude, longitude, radius){
         let nearbyTags = [];
-        for (let i = 0; i < this.geotags.length; i++) {
-            if(radius >= Math.sqrt(Math.pow(this.geotags[i].latitude - latitude, 2) + Math.pow(this.geotags[i].longitude - longitude, 2))){
-                nearbyTags.push(this.geotags[i]);
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if(radius >= Math.sqrt(Math.pow(this.#geotags[i].latitude - latitude, 2) + Math.pow(this.#geotags[i].longitude - longitude, 2))){
+                nearbyTags.push(this.#geotags[i]);
             }
         }
         return nearbyTags;
@@ -63,10 +67,10 @@ class InMemoryGeoTagStore{
 
     searchNearbyGeoTags(latitude, longitude, radius, keyword){
         let nearbyTags = [];
-        for (let i = 0; i < this.geotags.length; i++) {
-            if(radius >= Math.sqrt(Math.pow(this.geotags[i].latitude - latitude, 2) + Math.pow(this.geotags[i].longitude - longitude, 2))){
-                if(this.geotags[i].name.includes(keyword) || this.geotags[i].hashtag.includes(keyword)){
-                    nearbyTags.push(this.geotags[i]);
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if(radius >= Math.sqrt(Math.pow(this.#geotags[i].latitude - latitude, 2) + Math.pow(this.#geotags[i].longitude - longitude, 2))){
+                if(this.#geotags[i].name.includes(keyword) || this.#geotags[i].hashtag.includes(keyword)){
+                    nearbyTags.push(this.#geotags[i]);
                 }
             }
         }
