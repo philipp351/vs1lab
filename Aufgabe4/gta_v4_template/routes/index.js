@@ -60,14 +60,17 @@ router.get('/', (req, res) => {
 router.get('/api/geotags', (req, res) => {
   const latitude = req.query.disc_latitude;
   const longitude = req.query.disc_longitude;
-  const searchTerm = req.query.searchterm;
+  const searchterm = req.query.searchterm;
 
-  if (latitude && longitude && searchTerm != null){
-    res.send(geoTagStore.searchNearbyGeoTags(latitude, longitude, 100, searchTerm))
-  } else if (latitude && longitude != null){
+  const string = `latitude: ${latitude} longitude: ${longitude} searchTerm: ${searchterm}`;
+  console.log(string)
+
+  if (latitude != null && longitude != null && searchterm != null){
+    res.send(geoTagStore.searchNearbyGeoTags(latitude, longitude, 100, searchterm))
+  } else if (latitude != null && longitude != null){
     res.send(geoTagStore.getNearbyGeoTags(latitude, longitude, 100))
-  } else if (searchTerm != null){
-    res.send(geoTagStore.searchGeoTags(searchTerm))
+  } else if (searchterm != null){
+    res.send(geoTagStore.searchGeoTags(searchterm))
   } else {
     res.send(geoTagStore.geotags)
   }
@@ -85,7 +88,25 @@ router.get('/api/geotags', (req, res) => {
  * The new resource is rendered as JSON in the response.
  */
 
-// TODO: ... your code here ...
+router.post('/api/geotags', (req, res) => {
+  const latitude = req.body.disc_latitude;
+  const longitude = req.body.disc_longitude;
+  const name = req.body.name;
+  const hashtag = req.body.hashtag;
+
+  const newGeoTag = new GeoTag(name, latitude, longitude, hashtag);
+
+  if (latitude == null || longitude == null || name == null || hashtag == null){
+    res.status(400).send("Kein vollständiger Tag als Query mitgegeben \n" + "latitude: " +
+        latitude +  ", longitude: " + longitude + ", name: " + name + ", hashtag: " + hashtag)
+  } else {
+    geoTagStore.addGeoTag(newGeoTag)
+
+    const string = `http://localhost:3000/api/geotags?searchterm=${name}`;
+    res.header('New-Tag-URL', string)
+    res.status(201).send("Tag erfolgreich hinzugefügt!\n" + JSON.stringify(newGeoTag))
+  }
+});
 
 
 /**

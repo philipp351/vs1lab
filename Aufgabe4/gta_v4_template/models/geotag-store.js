@@ -46,6 +46,10 @@ class InMemoryGeoTagStore{
         this.#geotags.push(new GeoTag(name, latitude, longitude, hashtag));
     }
 
+    addGeoTag(GeoTag){
+        this.#geotags.push(GeoTag);
+    }
+
     // Method to remove geo-tags from the store by name
     removeGeoTag(name){
         for (let i = 0; i < this.tagList.length; i++) {
