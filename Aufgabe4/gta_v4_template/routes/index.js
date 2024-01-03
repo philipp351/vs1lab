@@ -128,10 +128,10 @@ router.get('/api/geotags/:id', (req, res) => {
   const searchId = req.params.id;
 
   const string = `id: ${searchId}`;
-  console.log(string)
+  //console.log(string)
 
   if (id != null){
-    console.log(geoTagStore.searchGeoTagByID(searchId))
+    //console.log(geoTagStore.searchGeoTagByID(searchId))
     res.send(geoTagStore.searchGeoTagByID(searchId))
   } else {
     res.status(400).send("keine ID wurde übergeben")
@@ -164,11 +164,11 @@ router.put('/api/geotags/:id', (req, res) => {
   const putTag = new GeoTag(name, latitude, longitude, hashtag, 27);
 
   const string = `id: ${putId}`;
-  console.log(string)
-  console.log(putTag)
+  //console.log(string)
+  //console.log(putTag)
 
   if (id != null && putTag){
-    console.log(geoTagStore.searchGeoTagByID(putId))
+    //console.log(geoTagStore.searchGeoTagByID(putId))
     geoTagStore.modifyGeoTagById(putId, putTag)
     res.send(geoTagStore.searchGeoTagByID(putId))
   } else {
@@ -188,6 +188,21 @@ router.put('/api/geotags/:id', (req, res) => {
  * The deleted resource is rendered as JSON in the response.
  */
 
-// TODO: ... your code here ...
+router.delete('/api/geotags/:id', (req, res) => {
+  const deleteId = req.params.id;
+
+  const string = `id: ${deleteId}`;
+  //console.log(string)
+
+  if (id != null){
+    //console.log(geoTagStore.searchGeoTagByID(deleteId))
+
+    const deletedTag = geoTagStore.searchGeoTagByID(deleteId);
+    geoTagStore.deleteGeoTagById(deleteId)
+    res.send(deletedTag)
+  } else {
+    res.status(400).send("keine ID wurde übergeben")
+  }
+});
 
 module.exports = router;

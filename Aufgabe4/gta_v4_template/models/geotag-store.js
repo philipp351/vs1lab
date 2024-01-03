@@ -120,6 +120,15 @@ class InMemoryGeoTagStore{
         }
     }
 
+    deleteGeoTagById(id) {
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if(this.#geotags[i].id == id){
+                this.#geotags[i] = null;
+                break;
+            }
+        }
+    }
+
 }
 
 module.exports = InMemoryGeoTagStore
