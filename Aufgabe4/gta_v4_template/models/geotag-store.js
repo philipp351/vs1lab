@@ -105,6 +105,21 @@ class InMemoryGeoTagStore{
         return geoTag;
     }
 
+    modifyGeoTagById(id, GeoTag){
+
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if(this.#geotags[i].id == id){
+                console.log(this.#geotags[i].name);
+                this.#geotags[i].name = GeoTag.name;
+                console.log(this.#geotags[i].name);
+                this.#geotags[i].latitude = GeoTag.latitude;
+                this.#geotags[i].longitude = GeoTag.longitude;
+                this.#geotags[i].hashtag = GeoTag.hashtag;
+                break;
+            }
+        }
+    }
+
 }
 
 module.exports = InMemoryGeoTagStore

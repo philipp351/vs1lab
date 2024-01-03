@@ -154,7 +154,27 @@ router.get('/api/geotags/:id', (req, res) => {
  * The updated resource is rendered as JSON in the response. 
  */
 
-// TODO: ... your code here ...
+router.put('/api/geotags/:id', (req, res) => {
+  const putId = req.params.id;
+  const name = req.body.GeoTag.name;
+  const longitude = req.body.GeoTag.longitude;
+  const latitude = req.body.GeoTag.latitude;
+  const hashtag = req.body.GeoTag.hashtag;
+
+  const putTag = new GeoTag(name, latitude, longitude, hashtag, 27);
+
+  const string = `id: ${putId}`;
+  console.log(string)
+  console.log(putTag)
+
+  if (id != null && putTag){
+    console.log(geoTagStore.searchGeoTagByID(putId))
+    geoTagStore.modifyGeoTagById(putId, putTag)
+    res.send(geoTagStore.searchGeoTagByID(putId))
+  } else {
+    res.status(400).send("keine ID oder geotag wurde übergeben")
+  }
+});
 
 
 /**
