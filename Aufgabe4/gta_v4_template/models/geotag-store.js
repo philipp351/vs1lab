@@ -32,8 +32,8 @@ class InMemoryGeoTagStore{
 
     constructor() {
         GeoTagExamples.tagList.forEach((item) => {
-            const [name, latitude, longitude, hashtag] = item;
-            const newGeoTag = new GeoTag(name, latitude, longitude, hashtag);
+            const [name, latitude, longitude, hashtag, id] = item;
+            const newGeoTag = new GeoTag(name, latitude, longitude, hashtag, id);
             this.#geotags.push(newGeoTag);
         });
     }
@@ -42,9 +42,12 @@ class InMemoryGeoTagStore{
         return this.#geotags;
       }
 
+      /* no use
     addGeoTag(name, latitude, longitude, hashtag){
         this.#geotags.push(new GeoTag(name, latitude, longitude, hashtag));
     }
+
+       */
 
     addGeoTag(GeoTag){
         this.#geotags.push(GeoTag);
@@ -89,6 +92,17 @@ class InMemoryGeoTagStore{
             }
         }
         return searchedTags;
+    }
+
+    searchGeoTagByID(id){
+        let geoTag = null;
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if(this.#geotags[i].id == id){
+                geoTag = this.#geotags[i];
+                break;
+            }
+        }
+        return geoTag;
     }
 
 }

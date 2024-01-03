@@ -57,6 +57,8 @@ router.get('/', (req, res) => {
  * If 'latitude' and 'longitude' are available, it will be further filtered based on radius.
  */
 
+let id = 11;
+
 router.get('/api/geotags', (req, res) => {
   const latitude = req.query.disc_latitude;
   const longitude = req.query.disc_longitude;
@@ -93,16 +95,18 @@ router.post('/api/geotags', (req, res) => {
   const longitude = req.body.disc_longitude;
   const name = req.body.name;
   const hashtag = req.body.hashtag;
+  const newid = id;
 
-  const newGeoTag = new GeoTag(name, latitude, longitude, hashtag);
+  const newGeoTag = new GeoTag(name, latitude, longitude, hashtag, newid);
 
   if (latitude == null || longitude == null || name == null || hashtag == null){
     res.status(400).send("Kein vollständiger Tag als Query mitgegeben \n" + "latitude: " +
         latitude +  ", longitude: " + longitude + ", name: " + name + ", hashtag: " + hashtag)
   } else {
     geoTagStore.addGeoTag(newGeoTag)
+    id++;
 
-    const string = `http://localhost:3000/api/geotags?searchterm=${name}`;
+    const string = `http://localhost:3000/api/geotags/${newGeoTag.id}`;
     res.header('New-Tag-URL', string)
     res.status(201).send("Tag erfolgreich hinzugefügt!\n" + JSON.stringify(newGeoTag))
   }
@@ -119,7 +123,21 @@ router.post('/api/geotags', (req, res) => {
  * The requested tag is rendered as JSON in the response.
  */
 
-// TODO: ... your code here ...
+
+router.get('/api/geotags/:id', (req, res) => {
+  const searchId = req.params.id;
+
+  const string = `id: ${searchId}`;
+  console.log(string)
+
+  if (id != null){
+    console.log(geoTagStore.searchGeoTagByID(searchId))
+    res.send(geoTagStore.searchGeoTagByID(searchId))
+  } else {
+    res.status(400).send("keine ID wurde übergeben")
+  }
+});
+
 
 
 /**
