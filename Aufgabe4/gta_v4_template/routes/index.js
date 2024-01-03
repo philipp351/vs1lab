@@ -108,7 +108,7 @@ router.post('/api/geotags', (req, res) => {
 
     const string = `http://localhost:3000/api/geotags/${newGeoTag.id}`;
     res.header('New-Tag-URL', string)
-    res.status(201).send("Tag erfolgreich hinzugefügt!\n" + JSON.stringify(newGeoTag))
+    res.status(201).send(newGeoTag)
   }
 });
 
