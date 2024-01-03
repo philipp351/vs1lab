@@ -28,6 +28,7 @@ const GeoTag = require('../models/geotag');
 const GeoTagStore = require('../models/geotag-store');
 
 // App routes (A3)
+const geoTagStore = new GeoTagStore();
 
 /**
  * Route '/' for HTTP 'GET' requests.
@@ -56,7 +57,21 @@ router.get('/', (req, res) => {
  * If 'latitude' and 'longitude' are available, it will be further filtered based on radius.
  */
 
-// TODO: ... your code here ...
+router.get('/api/geotags', (req, res) => {
+  const latitude = req.query.disc_latitude;
+  const longitude = req.query.disc_longitude;
+  const searchTerm = req.query.searchterm;
+
+  if (latitude && longitude && searchTerm != null){
+    res.send(geoTagStore.searchNearbyGeoTags(latitude, longitude, 100, searchTerm))
+  } else if (latitude && longitude != null){
+    res.send(geoTagStore.getNearbyGeoTags(latitude, longitude, 100))
+  } else if (searchTerm != null){
+    res.send(geoTagStore.searchGeoTags(searchTerm))
+  } else {
+    res.send(geoTagStore.geotags)
+  }
+});
 
 
 /**
