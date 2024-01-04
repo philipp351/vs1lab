@@ -48,11 +48,11 @@ async function handleDiscoveryButtonClick() {
     if (!form.checkValidity()) {
         form.reportValidity();
     }
-    const name = document.getElementById("searchterm").value;
+    const searchterm = document.getElementById("searchterm").value;
     const latitude = document.getElementById("latitude").value;
     const longitude = document.getElementById("longitude").value;
 
-    const url = `/api/geotags?name=${name}&latitude=${latitude}&longitude=${longitude}`;
+    const url = `/api/geotags?searchterm=${searchterm}&latitude=${latitude}&longitude=${longitude}`;
 
     fetch(url)
         .then(response => response.json())
