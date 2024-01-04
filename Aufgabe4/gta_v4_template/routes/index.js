@@ -65,7 +65,7 @@ router.get('/api/geotags', (req, res) => {
   const searchterm = req.query.searchterm;
 
   const string = `latitude: ${latitude} longitude: ${longitude} searchTerm: ${searchterm}`;
-  console.log(string)
+  //console.log(string)
 
   if (latitude != null && longitude != null && searchterm != null){
     res.send(geoTagStore.searchNearbyGeoTags(latitude, longitude, 100, searchterm))
@@ -91,8 +91,8 @@ router.get('/api/geotags', (req, res) => {
  */
 
 router.post('/api/geotags', (req, res) => {
-  const latitude = req.body.disc_latitude;
-  const longitude = req.body.disc_longitude;
+  const latitude = Number(req.body.disc_latitude);
+  const longitude = Number(req.body.disc_longitude);
   const name = req.body.name;
   const hashtag = req.body.hashtag;
   const newid = id;
