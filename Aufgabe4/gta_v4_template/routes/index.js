@@ -113,7 +113,7 @@ router.get('/api/geotags', (req, res) => {
   const searchterm = req.query.searchterm;
 
   const string = `latitude: ${latitude} longitude: ${longitude} searchTerm: ${searchterm}`;
-  console.log(string)
+  //console.log(string)
 
   if (latitude != null && longitude != null && searchterm != null){
     res.send(geoTagStore.searchNearbyGeoTags(latitude, longitude, 100, searchterm))
