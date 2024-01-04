@@ -1,0 +1,55 @@
+//Homepage 
+GET http://localhost:3000/ 
+content-type: application/json
+
+###
+
+//All geotags 
+GET http://localhost:3000/api/geotags
+
+###
+
+//Get geotags by name 
+GET http://localhost:3000/api/geotags?name=IWI
+
+//Get geotags by latitude and longitude 
+GET http://localhost:3000/api/geotags?latitude=48.98770&longitude=8.38080
+
+###
+
+//Get geotags by latitude, longitude and name (is defined) 
+GET http://localhost:3000/api/geotags?name=BuildingE&latitude=49.014993&longitude=8.390049 
+###
+
+//Get geotags by latitude, longitude and name (is undefined) 
+GET http://localhost:3000/api/geotags?name=camp&latitude=48.98770&longitude=8.38080
+
+###
+
+//Create geotag 
+POST http://localhost:3000/api/geotags 
+content-type: application/json
+{
+    "latitude": "42", "longitude": "42", "name": "test", "hashtag": "#test"
+
+}
+
+###
+
+//Get single geotag
+GET http://localhost:3000/api/geotags/Castle
+
+###
+
+//Update geotag 
+PUT http://localhost:3000/api/geotags/test 
+content-type: application/json
+
+{
+    "latitude": "49", "longitude": "49", "name": "test", "hashtag": "#test"
+
+}
+
+###
+
+//Delete geotag DELETE http://localhost:3000/api/geotags/test
