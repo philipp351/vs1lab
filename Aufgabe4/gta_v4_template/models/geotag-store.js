@@ -109,11 +109,11 @@ class InMemoryGeoTagStore{
 
         for (let i = 0; i < this.#geotags.length; i++) {
             if(this.#geotags[i].id == id){
-                console.log(this.#geotags[i].name);
+               // console.log(this.#geotags[i].latitude);
                 this.#geotags[i].name = GeoTag.name;
-                console.log(this.#geotags[i].name);
-                this.#geotags[i].latitude = GeoTag.latitude;
-                this.#geotags[i].longitude = GeoTag.longitude;
+                this.#geotags[i].latitude = Number(GeoTag.latitude);
+               // console.log(this.#geotags[i].latitude);
+                this.#geotags[i].longitude = Number(GeoTag.longitude);
                 this.#geotags[i].hashtag = GeoTag.hashtag;
                 break;
             }
