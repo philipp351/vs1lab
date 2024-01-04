@@ -7,6 +7,7 @@ taggingButton.addEventListener("click", handleTaggingButtonClick);
 discoveryButton.addEventListener("click", handleDiscoveryButtonClick);
 
 async function handleTaggingButtonClick() {
+    event.preventDefault();
     const form = document.getElementById('tag-form');
     if (!form.checkValidity()) {
         form.reportValidity();
@@ -42,6 +43,7 @@ async function handleTaggingButtonClick() {
 }
 
 async function handleDiscoveryButtonClick() {
+    event.preventDefault();
     const form = document.getElementById('discoveryFilterForm');
     if (!form.checkValidity()) {
         form.reportValidity();

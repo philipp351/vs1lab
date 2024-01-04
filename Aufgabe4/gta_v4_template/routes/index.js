@@ -139,8 +139,8 @@ router.get('/api/geotags', (req, res) => {
  */
 
 router.post('/api/geotags', (req, res) => {
-  const latitude = req.body.disc_latitude;
-  const longitude = req.body.disc_longitude;
+  const latitude = req.body.latitude;
+  const longitude = req.body.longitude;
   const name = req.body.name;
   const hashtag = req.body.hashtag;
   const newid = id;
