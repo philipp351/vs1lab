@@ -27,68 +27,8 @@ const GeoTag = require('../models/geotag');
 // eslint-disable-next-line no-unused-vars
 const GeoTagStore = require('../models/geotag-store');
 
+// App routes (A3)
 const geoTagStore = new GeoTagStore();
-
-router.get('/', (req, res) => {
-  res.render('index', {taglist: geoTagStore.geotags, latitude: "", longitude: "" })
-});
-
-/**
- * Route '/tagging' for HTTP 'POST' requests.
- * (http://expressjs.com/de/4x/api.html#app.post.method)
- *
- * Requests cary the fields of the tagging form in the body.
- * (http://expressjs.com/de/4x/api.html#req.body)
- *
- * Based on the form data, a new geotag is created and stored.
- *
- * As response, the ejs-template is rendered with geotag objects.
- * All result objects are located in the proximity of the new geotag.
- * To this end, "GeoTagStore" provides a method to search geotags 
- * by radius around a given location.
- */
-
-router.post('/tagging', (req, res) => {
-  const name = req.body.name;
-  const latitude = req.body.latitude;
-  const longitude = req.body.longitude;
-  const hashtag = req.body.hashtag;
-
-  geoTagStore.addGeoTag(name, latitude, longitude, hashtag);
-  res.render('index', {
-    taglist: geoTagStore.getNearbyGeoTags(latitude, longitude, 100),
-    latitude: latitude,
-    longitude: longitude
-  });
-});
-
-
-/**
- * Route '/discovery' for HTTP 'POST' requests.
- * (http://expressjs.com/de/4x/api.html#app.post.method)
- *
- * Requests cary the fields of the discovery form in the body.
- * This includes coordinates and an optional search term.
- * (http://expressjs.com/de/4x/api.html#req.body)
- *
- * As response, the ejs-template is rendered with geotag objects.
- * All result objects are located in the proximity of the given coordinates.
- * If a search term is given, the results are further filtered to contain 
- * the term as a part of their names or hashtags. 
- * To this end, "GeoTagStore" provides methods to search geotags 
- * by radius and keyword.
- */
-
-router.post('/discovery', (req, res) => {
-  const latitude = req.body.disc_latitude;
-  const longitude = req.body.disc_longitude;
-  const searchTerm = req.body.searchterm;
-  res.render('index', {
-    taglist: geoTagStore.searchNearbyGeoTags(latitude, longitude, 100, searchTerm),
-    latitude: latitude,
-    longitude: longitude
-  });
-});
 
 /**
  * Route '/' for HTTP 'GET' requests.
@@ -117,7 +57,26 @@ router.get('/', (req, res) => {
  * If 'latitude' and 'longitude' are available, it will be further filtered based on radius.
  */
 
-// TODO: ... your code here ...
+let id = 11;
+
+router.get('/api/geotags', (req, res) => {
+  const latitude = req.query.disc_latitude;
+  const longitude = req.query.disc_longitude;
+  const searchterm = req.query.searchterm;
+
+  const string = `latitude: ${latitude} longitude: ${longitude} searchTerm: ${searchterm}`;
+  console.log(string)
+
+  if (latitude != null && longitude != null && searchterm != null){
+    res.send(geoTagStore.searchNearbyGeoTags(latitude, longitude, 100, searchterm))
+  } else if (latitude != null && longitude != null){
+    res.send(geoTagStore.getNearbyGeoTags(latitude, longitude, 100))
+  } else if (searchterm != null){
+    res.send(geoTagStore.searchGeoTags(searchterm))
+  } else {
+    res.send(geoTagStore.geotags)
+  }
+});
 
 
 /**
@@ -131,7 +90,27 @@ router.get('/', (req, res) => {
  * The new resource is rendered as JSON in the response.
  */
 
-// TODO: ... your code here ...
+router.post('/api/geotags', (req, res) => {
+  const latitude = req.body.disc_latitude;
+  const longitude = req.body.disc_longitude;
+  const name = req.body.name;
+  const hashtag = req.body.hashtag;
+  const newid = id;
+
+  const newGeoTag = new GeoTag(name, latitude, longitude, hashtag, newid);
+
+  if (latitude == null || longitude == null || name == null || hashtag == null){
+    res.status(400).send("Kein vollständiger Tag als Query mitgegeben \n" + "latitude: " +
+        latitude +  ", longitude: " + longitude + ", name: " + name + ", hashtag: " + hashtag)
+  } else {
+    geoTagStore.addGeoTag(newGeoTag)
+    id++;
+
+    const string = `http://localhost:3000/api/geotags/${newGeoTag.id}`;
+    res.header('New-Tag-URL', string)
+    res.status(201).send(newGeoTag)
+  }
+});
 
 
 /**
@@ -144,7 +123,21 @@ router.get('/', (req, res) => {
  * The requested tag is rendered as JSON in the response.
  */
 
-// TODO: ... your code here ...
+
+router.get('/api/geotags/:id', (req, res) => {
+  const searchId = req.params.id;
+
+  const string = `id: ${searchId}`;
+  //console.log(string)
+
+  if (id != null){
+    //console.log(geoTagStore.searchGeoTagByID(searchId))
+    res.send(geoTagStore.searchGeoTagByID(searchId))
+  } else {
+    res.status(400).send("keine ID wurde übergeben")
+  }
+});
+
 
 
 /**
@@ -161,7 +154,27 @@ router.get('/', (req, res) => {
  * The updated resource is rendered as JSON in the response. 
  */
 
-// TODO: ... your code here ...
+router.put('/api/geotags/:id', (req, res) => {
+  const putId = req.params.id;
+  const name = req.body.GeoTag.name;
+  const longitude = req.body.GeoTag.longitude;
+  const latitude = req.body.GeoTag.latitude;
+  const hashtag = req.body.GeoTag.hashtag;
+
+  const putTag = new GeoTag(name, latitude, longitude, hashtag, 27);
+
+  const string = `id: ${putId}`;
+  //console.log(string)
+  //console.log(putTag)
+
+  if (id != null && putTag){
+    //console.log(geoTagStore.searchGeoTagByID(putId))
+    geoTagStore.modifyGeoTagById(putId, putTag)
+    res.send(geoTagStore.searchGeoTagByID(putId))
+  } else {
+    res.status(400).send("keine ID oder geotag wurde übergeben")
+  }
+});
 
 
 /**
@@ -175,6 +188,21 @@ router.get('/', (req, res) => {
  * The deleted resource is rendered as JSON in the response.
  */
 
-// TODO: ... your code here ...
+router.delete('/api/geotags/:id', (req, res) => {
+  const deleteId = req.params.id;
+
+  const string = `id: ${deleteId}`;
+  //console.log(string)
+
+  if (id != null){
+    //console.log(geoTagStore.searchGeoTagByID(deleteId))
+
+    const deletedTag = geoTagStore.searchGeoTagByID(deleteId);
+    geoTagStore.deleteGeoTagById(deleteId)
+    res.send(deletedTag)
+  } else {
+    res.status(400).send("keine ID wurde übergeben")
+  }
+});
 
 module.exports = router;

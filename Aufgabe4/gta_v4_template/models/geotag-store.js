@@ -32,8 +32,8 @@ class InMemoryGeoTagStore{
 
     constructor() {
         GeoTagExamples.tagList.forEach((item) => {
-            const [name, latitude, longitude, hashtag] = item;
-            const newGeoTag = new GeoTag(name, latitude, longitude, hashtag);
+            const [name, latitude, longitude, hashtag, id] = item;
+            const newGeoTag = new GeoTag(name, latitude, longitude, hashtag, id);
             this.#geotags.push(newGeoTag);
         });
     }
@@ -42,8 +42,15 @@ class InMemoryGeoTagStore{
         return this.#geotags;
       }
 
+      /* no use
     addGeoTag(name, latitude, longitude, hashtag){
         this.#geotags.push(new GeoTag(name, latitude, longitude, hashtag));
+    }
+
+       */
+
+    addGeoTag(GeoTag){
+        this.#geotags.push(GeoTag);
     }
 
     // Method to remove geo-tags from the store by name
@@ -75,6 +82,51 @@ class InMemoryGeoTagStore{
             }
         }
         return nearbyTags;
+    }
+
+    searchGeoTags(keyword) {
+        let searchedTags = [];
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if(this.#geotags[i].name.includes(keyword) || this.#geotags[i].hashtag.includes(keyword)){
+                searchedTags.push(this.#geotags[i]);
+            }
+        }
+        return searchedTags;
+    }
+
+    searchGeoTagByID(id){
+        let geoTag = null;
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if(this.#geotags[i].id == id){
+                geoTag = this.#geotags[i];
+                break;
+            }
+        }
+        return geoTag;
+    }
+
+    modifyGeoTagById(id, GeoTag){
+
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if(this.#geotags[i].id == id){
+                console.log(this.#geotags[i].name);
+                this.#geotags[i].name = GeoTag.name;
+                console.log(this.#geotags[i].name);
+                this.#geotags[i].latitude = GeoTag.latitude;
+                this.#geotags[i].longitude = GeoTag.longitude;
+                this.#geotags[i].hashtag = GeoTag.hashtag;
+                break;
+            }
+        }
+    }
+
+    deleteGeoTagById(id) {
+        for (let i = 0; i < this.#geotags.length; i++) {
+            if(this.#geotags[i].id == id){
+                this.#geotags[i] = null;
+                break;
+            }
+        }
     }
 
 }
