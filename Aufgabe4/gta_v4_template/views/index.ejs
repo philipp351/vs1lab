@@ -39,7 +39,7 @@
                     <input type="number" id="longitude" name="longitude" placeholder="49.56" size="10" value="<%= longitude %>"  readonly/> 
                     <label for="hashtag">Hashtag</label>
                     <input type="text" id="tagTextField" name="hashtag" placeholder="#StudyLife" size="10" pattern="#[A-Za-z]+"/> 
-                    <input type="submit" name="submit" size="10"/><br><br> 
+                    <input type="submit" id="taggingButton" name="taggingButton" size="10"/><br><br> 
                 </fieldset>
             </form>
             </div>
@@ -58,7 +58,7 @@
                         <input type="text" id="searchterm" label="searchterm" name="searchterm" placeholder="z.B. Karlsruhe"  size="10" />
                         <input type="hidden" id="disc_latitude" label="disc_latitude" name="disc_latitude" value="<%= latitude %>" readonly/>
                         <input type="hidden" id="disc_longitude" label="disc_longitude" name="disc_longitude" value="<%= longitude %>" readonly/>
-                        <input type="submit" value="Suchen"/>
+                        <input type="submit" name="discoveryButton" id="discoveryButton" value="Suchen"/>
                 </fieldset>
             </form>
             </div>
