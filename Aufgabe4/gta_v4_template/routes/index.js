@@ -130,11 +130,15 @@ router.get('/api/geotags/:id', (req, res) => {
   const string = `id: ${searchId}`;
   //console.log(string)
 
-  if (id != null){
+  if (searchId != null){
     //console.log(geoTagStore.searchGeoTagByID(searchId))
-    res.send(geoTagStore.searchGeoTagByID(searchId))
+    const tag = geoTagStore.searchGeoTagByID(searchId);
+    if (!tag){
+      res.status(404).send("keine ID wurde übergeben")
+    }
+    res.send(tag)
   } else {
-    res.status(400).send("keine ID wurde übergeben")
+    res.status(404).send("keine ID wurde übergeben")
   }
 });
 
