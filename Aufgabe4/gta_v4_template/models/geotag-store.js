@@ -97,12 +97,16 @@ class InMemoryGeoTagStore{
     searchGeoTagByID(id){
         let geoTag = null;
         for (let i = 0; i < this.#geotags.length; i++) {
-            if(this.#geotags[i].id == id){
-                geoTag = this.#geotags[i];
-                break;
+            const tag = this.#geotags[i];
+            if (tag) {
+                if (tag.id == id) {
+                    geoTag = this.#geotags[i];
+                    break;
+                }
+                return geoTag;
             }
         }
-        return geoTag;
+        return geoTag
     }
 
     modifyGeoTagById(id, GeoTag){
